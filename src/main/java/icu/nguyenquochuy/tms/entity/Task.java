@@ -1,8 +1,10 @@
 package icu.nguyenquochuy.tms.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import icu.nguyenquochuy.tms.enums.TaskPriority;
 import icu.nguyenquochuy.tms.enums.TaskStatus;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;

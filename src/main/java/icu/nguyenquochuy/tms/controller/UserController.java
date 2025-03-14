@@ -4,16 +4,15 @@ import icu.nguyenquochuy.tms.entity.User;
 import icu.nguyenquochuy.tms.service.UserService;
 import icu.nguyenquochuy.tms.vo.PaginationResponseVO;
 import icu.nguyenquochuy.tms.vo.ResponseVO;
+import icu.nguyenquochuy.tms.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,20 +20,20 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("${tms.api.user.url}")
-    public ResponseEntity<PaginationResponseVO<User>> getUsers(Pageable pageable) {
+    public PaginationResponseVO<UserVO> getUsers(Pageable pageable) {
         Page<User> userPage = userService.getUsers(pageable);
-        PaginationResponseVO<User> response = PaginationResponseVO.success(
-                userPage.getContent(),
+        return PaginationResponseVO.success(
+                userPage.getContent().stream().map(UserVO::from),
                 userPage.getNumber(),
                 userPage.getSize(),
                 userPage.getTotalElements()
         );
-        return ResponseEntity.ok(response);
     }
 
     @PostMapping("${tms.api.user.create.url}")
-    public ResponseEntity<ResponseVO<User>> createUser(@RequestBody User user) {
-        User createdUser = userService.create(user);
-        return ResponseEntity.ok(ResponseVO.created("", createdUser));
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseVO<UserVO> createUser(@RequestBody User user) {
+        UserVO userVO = Optional.of(userService.create(user)).map(UserVO::from).get();
+        return ResponseVO.created("", userVO);
     }
 }

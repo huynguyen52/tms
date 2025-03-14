@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
-    public Page<User> getUsers(Pageable pageable);
+    Page<User> getUsers(Pageable pageable);
 
     User create(User user);
 }

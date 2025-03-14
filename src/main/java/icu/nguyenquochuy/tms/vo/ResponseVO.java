@@ -20,7 +20,7 @@ public class ResponseVO<T> {
     private T data;
 
     public ResponseVO(int status, T data) {
-        this.status = HttpStatus.OK.value();
+        this.status = status;
         this.timestamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         this.message = Messages.GET_DATA_SUCCESS;
         this.data = data;

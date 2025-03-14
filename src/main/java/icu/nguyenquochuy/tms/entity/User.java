@@ -1,5 +1,6 @@
 package icu.nguyenquochuy.tms.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import icu.nguyenquochuy.tms.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
